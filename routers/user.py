@@ -1,4 +1,6 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
+
+from dependencies import get_auth
 
 router = APIRouter(
     prefix="/users",
@@ -13,6 +15,11 @@ fake_users_db = {"1": {"name": "박재현"}, "2": {"name": "조유신"}}
 @router.get("/")
 async def read_items():
     return fake_users_db
+
+
+@router.get("/me")
+async def me(user: str = Depends(get_auth)):
+    return user
 
 
 @router.get("/{user_id}")

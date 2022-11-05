@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-
 from models import Item
 
 
@@ -18,3 +17,4 @@ class User(UserBase):
 
     class Config:
         orm_mode = True
+        arbitrary_types_allowed = True

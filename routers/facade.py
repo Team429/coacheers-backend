@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from . import item
+from . import attendance
 from . import user
 
 router = APIRouter()
@@ -11,5 +11,5 @@ async def root():
     return {"msg": "Hello from FastAPI!"}
 
 
-router.include_router(item.router)
+router.include_router(attendance.router)
 router.include_router(user.router)

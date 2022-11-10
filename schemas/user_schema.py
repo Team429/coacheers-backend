@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from schemas import item_schema
+from schemas import attendance_schema
 
 
 class UserBase(BaseModel):
@@ -8,13 +8,13 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    password: str
+    pass
 
 
 class User(UserBase):
     id: int
     is_active: bool
-    items: list[item_schema.Item] = []
+    attendances: list[attendance_schema.Attendance] = []
 
     class Config:
         orm_mode = True

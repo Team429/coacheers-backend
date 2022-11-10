@@ -9,7 +9,6 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String(400), unique=True, index=True)
-    hashed_password = Column(String(400))
     is_active = Column(Boolean, default=True)
 
-    items = relationship("Item", back_populates="owner")
+    attendances = relationship("Attendance", back_populates="user")

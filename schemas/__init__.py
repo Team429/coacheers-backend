@@ -1,2 +1,2 @@
-from . import item_schema
+from . import attendance_schema
 from . import user_schema

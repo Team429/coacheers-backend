@@ -1,12 +1,11 @@
 from sqlalchemy.orm import Session
 
 import models
-import schemas.item_schema
+import schemas.attendance_schema
 
 
 def create_user(db: Session, user: schemas.user_schema):
-    fake_hashed_password = user.password + "notreallyhashed"
-    db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
+    db_user = models.User(email=user.email, )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)

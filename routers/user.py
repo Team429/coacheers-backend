@@ -1,6 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
 
-from dependencies import get_auth
+from dependencies import get_auth, get_db
+from repositories import user_repository
+from schemas import user_schema
 
 router = APIRouter(
     prefix="/users",
@@ -10,6 +12,11 @@ router = APIRouter(
 )
 
 fake_users_db = {"1": {"name": "박재현"}, "2": {"name": "조유신"}}
+
+
+@router.post("/", response_model=user_schema.User)
+async def create_user(user: user_schema.UserCreate, db=Depends(get_db)):
+    return user_repository.create_user(db, user)
 
 
 @router.get("/")

@@ -1,9 +1,10 @@
 from fastapi import APIRouter, HTTPException
-from dependencies import get_db, get_auth
-from schemas import item_schema
-from repositories import item_repository
-from sqlalchemy.orm import Session
 from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from dependencies import get_db
+from repositories import item_repository
+from schemas import item_schema
 
 router = APIRouter(
     prefix="/items",

@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from models import Item
+
+from schemas import item_schema
 
 
 class UserBase(BaseModel):
@@ -13,7 +14,7 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     is_active: bool
-    items: list[Item] = []
+    items: list[item_schema.Item] = []
 
     class Config:
         orm_mode = True

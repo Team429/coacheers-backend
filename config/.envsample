@@ -1,0 +1,2 @@
+APP_ENV=dev
+DATABASE_URL=mysql+pymysql://root:secret@localhost:3306/coacheers

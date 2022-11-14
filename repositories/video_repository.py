@@ -4,7 +4,7 @@ from schemas import video_schema
 
 
 def get_videos(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Record).offset(skip).limit(limit).all()
+    return db.query(models.Video).offset(skip).limit(limit).all()
 
 
 def create_user_video(db: Session, video: video_schema.VideoCreate):

@@ -4,7 +4,7 @@ from . import attendance
 from . import user
 from . import record
 from . import video
-
+from . import face
 router = APIRouter()
 
 
@@ -17,3 +17,4 @@ router.include_router(attendance.router)
 router.include_router(user.router)
 router.include_router(record.router)
 router.include_router(video.router)
+router.include_router(face.router)

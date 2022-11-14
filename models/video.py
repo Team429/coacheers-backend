@@ -14,3 +14,4 @@ class Video(Base):
     record_id = Column(Integer, ForeignKey("records.id"))
 
     record = relationship("Record", back_populates="video")
+    face = relationship("Face", back_populates="video")

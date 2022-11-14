@@ -11,7 +11,7 @@ class Record(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     created_at = Column(TIMESTAMP)
 
-    label = Column(String(400),)
+    label = Column(String(400), )
     anger_score = Column(Integer)
     scorn_score = Column(Integer)
     disgust_score = Column(Integer)
@@ -22,3 +22,4 @@ class Record(Base):
     voice_score = Column(Integer)
 
     user = relationship("User", back_populates="records")
+    video = relationship("Video", back_populates="record")

@@ -5,6 +5,8 @@ from . import user
 from . import record
 from . import video
 from . import face
+from . import sound
+
 router = APIRouter()
 
 
@@ -18,3 +20,4 @@ router.include_router(user.router)
 router.include_router(record.router)
 router.include_router(video.router)
 router.include_router(face.router)
+router.include_router(sound.router)

@@ -20,13 +20,14 @@ async def create_face(face: face_schema.FaceCreate,
     return created
 
 
-@router.get("/",response_model=list[face_schema.Face], summary="전체 표정 조회")
-async def read_faces(skip:int = 0, limit : int = 400,
-                    db:Session = Depends(get_db)):
-    faces = face_repository.get_faces(db, skip=skip, limit = limit)
+@router.get("/", response_model=list[face_schema.Face], summary="전체 표정 조회")
+async def read_faces(skip: int = 0, limit: int = 400,
+                     db: Session = Depends(get_db)):
+    faces = face_repository.get_faces(db, skip=skip, limit=limit)
     return faces
 
+
 @router.get("/{face_id}", response_model=face_schema.Face, summary="단일 표정 조회")
-async def read_face(face_id: int, db:Session = Depends(get_db)):
+async def read_face(face_id: int, db: Session = Depends(get_db)):
     face = face_repository.get_face(db, face_id)
     return face

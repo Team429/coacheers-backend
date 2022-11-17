@@ -13,6 +13,12 @@ class AttendanceCreate(AttendanceBase):
     pass
 
 
+class AttendanceSearch(BaseModel):
+    user_id: int
+    start_date: datetime
+    end_date: datetime
+
+
 class Attendance(AttendanceBase):
     id: int
 

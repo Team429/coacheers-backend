@@ -12,6 +12,7 @@ def get_env():
 class Settings(BaseSettings):
     app_env: str = "dev"
     database_url: str
+    resource_path: str
 
     class Config:
         env_file = 'config/.env'

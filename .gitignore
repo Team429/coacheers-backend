@@ -264,3 +264,6 @@ pyvenv.cfg
 pip-selfcheck.json
 
 # End of https://www.toptal.com/developers/gitignore/api/jetbrains+all,python,venv
+
+google_credentials.json
+resources/

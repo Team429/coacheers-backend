@@ -1,10 +1,6 @@
 from datetime import datetime
-
-from fastapi import Depends
 from sqlalchemy.orm import Session
-
 import models
-from dependencies import get_db
 from schemas import attendance_schema
 
 
@@ -27,10 +23,9 @@ def get_attendance(db: Session, attendance_id):
 def exist_attendance(db: Session, user_id: int, date: datetime):
     count = db.query(models.Attendance) \
         .filter(models.Attendance.user_id == user_id) \
-        .filter(models.Attendance.created_at > date.today().min) \
-        .filter(models.Attendance.created_at < date.today().max) \
+        .filter(models.Attendance.created_at >= date.today().replace(hour=0, minute=0, second=0, microsecond=0)) \
+        .filter(models.Attendance.created_at <= date.today().replace(hour=23, minute=23, second=59, microsecond=999999)) \
         .count()
-    print(count)
     if count > 0:
         return True
     else:

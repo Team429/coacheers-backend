@@ -23,7 +23,7 @@ async def create_attendance(attendance: attendance_schema.AttendanceCreate,
                             db: Session = Depends(get_db)):
     if attendance_service.create_daily_attendance(attendance.user_id, datetime.now(), db):
         created = attendance_repository.create_user_attendance(db, attendance)
-    return created
+        return created
 
 
 @router.get("/{attendance_id}", response_model=attendance_schema.Attendance, summary="출석 단건 조회")

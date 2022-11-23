@@ -42,3 +42,9 @@ async def search_week_records(record: record_schema.RecordWeekSearch,
                               db: Session = Depends(get_db)):
     record = record_service.search_period_record(record.user_id, record.start_date, db, datetime.now())
     return record
+
+
+@router.post("/record_id}", response_model=record_schema.RecordOne, summary="기록 단건 조회")
+async def search_record(record_id: int, db: Session = Depends(get_db)):
+    record = record_repository.get_record(db, record_id)
+    return record

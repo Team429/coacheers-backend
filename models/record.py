@@ -21,6 +21,7 @@ class Record(Base):
     surprised_score = Column(Float)
     voice_score = Column(Float)
     face_score = Column(Float)
+    total_score = Column(Float)
 
     user = relationship("User", back_populates="records")
     video = relationship("Video", back_populates="record")

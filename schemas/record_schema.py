@@ -31,6 +31,7 @@ class RecordMonthSearch(RecordSearch):
 
 class RecordWeekSearch(RecordSearch):
     start_date = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(weeks=1)
+    end_date = datetime.today().replace(hour=23, minute=59, second=59, microsecond=999999) - timedelta(days=1)
 
 
 class Record(RecordBase):
@@ -38,6 +39,26 @@ class Record(RecordBase):
     label: str
     voice_score: float
     face_score: float
+    total_score: float
+
+    class Config:
+        orm_mode = True
+
+
+class RecordOne(BaseModel):
+    label: str
+    # start_date: datetime
+    # end_date: datetime
+    voice_score: float
+    face_score: float
+    total_score: float
+    anger_score: float
+    scorn_score: float
+    disgust_score: float
+    happy_score: float
+    neutral_score: float
+    sad_score: float
+    surprised_score: float
 
     class Config:
         orm_mode = True

@@ -44,7 +44,7 @@ async def search_week_records(record: record_schema.RecordWeekSearch,
     return record
 
 
-@router.post("/record_id}", response_model=record_schema.RecordOne, summary="기록 단건 조회")
+@router.post("/{record_id}", response_model=record_schema.RecordOne, summary="기록 단건 조회")
 async def search_record(record_id: int, db: Session = Depends(get_db)):
     record = record_repository.get_record(db, record_id)
     return record

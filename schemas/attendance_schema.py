@@ -19,6 +19,10 @@ class AttendanceSearch(BaseModel):
     end_date: datetime
 
 
+class AttendanceSearchMonth(AttendanceSearch):
+    start_date = datetime.today().replace(day=1, hour=0, minute=0, second=0, microsecond=000000)
+
+
 class Attendance(AttendanceBase):
     id: int
 

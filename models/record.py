@@ -22,6 +22,8 @@ class Record(Base):
     sad_score = Column(Float, default=0.0)
     surprised_score = Column(Float, default=0.0)
     voice_score = Column(Float, default=0.0)
+    face_score = Column(Float, default=0.0)
+    total_score = Column(Float, default=0.0)
 
     user = relationship("User", back_populates="records")
     video = relationship("Video", back_populates="record")

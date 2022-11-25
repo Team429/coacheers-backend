@@ -14,17 +14,14 @@ class Record(Base):
     label = Column(String(400))
     filepath = Column(String(400))
 
-    anger_score = Column(Float, default=0.0)
-    scorn_score = Column(Float, default=0.0)
-    disgust_score = Column(Float, default=0.0)
-    happy_score = Column(Float, default=0.0)
-    neutral_score = Column(Float, default=0.0)
-    sad_score = Column(Float, default=0.0)
-    surprised_score = Column(Float, default=0.0)
+    anger_score = Column(Integer, default=0)
+    joy_score = Column(Integer, default=0)
+    sorrow_score = Column(Integer, default=0)
+    surprised_score = Column(Integer, default=0)
+
     voice_score = Column(Float, default=0.0)
-    total_score = Column(Float, default=0.0)
     face_score = Column(Float, default=0.0)
+    total_score = Column(Float, default=0.0)
 
     user = relationship("User", back_populates="records")
-    video = relationship("Video", back_populates="record")
 

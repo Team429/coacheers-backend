@@ -1,13 +1,15 @@
+import datetime
+
 import fastapi
-from fastapi import APIRouter
+from fastapi import APIRouter, Form
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
-import models
 from dependencies import get_db
 from repositories import video_repository
 from schemas import video_schema
 from services.analyzing import analyze_video
+from services import video_service
 
 router = APIRouter(
     prefix="/videos",
@@ -18,13 +20,15 @@ router = APIRouter(
 
 
 @router.post("/", summary="비디오 생성")
-async def create_video(test: fastapi.UploadFile, db: Session = Depends(get_db)):
-    await analyze_video(test)
-    print("OK! OK! OK! OK!")
-
-    # created = video_repository.create_user_video(db, video)
-    # return created
-    return {"msg": "OK! "}
+async def create_video(video: fastapi.UploadFile, file_path: str = Form(), create_at: datetime.datetime = Form(),
+                       db: Session = Depends(get_db)):
+    dir_path, faces = await analyze_video(video)
+    schema = video_schema.VideoCreate()
+    schema.created_at = create_at
+    schema.file_path = file_path
+    created_video = video_repository.create_video(db, schema)
+    video_service.create_face_rows(faces, created_video, db)
+    return {"path": dir_path, "face": faces}
 
 
 @router.get("/", response_model=list[video_schema.Video], summary="전체 비디오 조회")

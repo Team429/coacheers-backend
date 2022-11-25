@@ -10,13 +10,12 @@ class RecordBase(BaseModel):
 class RecordCreate(RecordBase):
     label: str
     filepath: str
-    anger_score: float
-    scorn_score: float
-    disgust_score: float
-    happy_score: float
-    neutral_score: float
-    sad_score: float
-    surprised_score: float
+
+    anger_score: int
+    joy_score: int
+    sorrow_score: int
+    surprised_score: int
+
     voice_score: float
 
 
@@ -53,13 +52,18 @@ class RecordOne(BaseModel):
     voice_score: float
     face_score: float
     total_score: float
-    anger_score: float
-    scorn_score: float
-    disgust_score: float
-    happy_score: float
-    neutral_score: float
-    sad_score: float
-    surprised_score: float
+
+    anger_score: int
+    joy_score: int
+    sorrow_score: int
+    surprised_score: int
+
+    class Config:
+        orm_mode = True
+
+
+class RecordSearchTotal(BaseModel):
+    user_id: int
 
     class Config:
         orm_mode = True

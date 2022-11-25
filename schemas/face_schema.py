@@ -7,14 +7,11 @@ class FaceBase(BaseModel):
 
 
 class FaceCreate(FaceBase):
-    anger_score: float
-    scorn_score: float
-    disgust_score: float
-    happy_score: float
-    neutral_score: float
-    sad_score: float
-    surprised_score: float
-    voice_score: float
+    anger_score: int
+    joy_score: int
+    sorrow_score: int
+    surprised_score: int
+
     started_at: datetime
     ended_at: datetime
 

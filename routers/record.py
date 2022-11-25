@@ -26,7 +26,7 @@ async def create_record(record: record_schema.RecordCreate,
 @router.post("/search", response_model=list[record_schema.Record], summary="기록 기간 조회")
 async def search_period_records(record: record_schema.RecordSearch,
                                 db: Session = Depends(get_db)):
-    record = record_service.search_period_record(record.user_id, record.start_date, db, datetime.now())
+    record = record_service.search_period_record(record.user_id, record.start_date, db, record.end_date)
     return record
 
 

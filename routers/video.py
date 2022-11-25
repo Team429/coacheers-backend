@@ -20,9 +20,13 @@ router = APIRouter(
 async def create_video(video: fastapi.UploadFile, db: Session = Depends(get_db)):
     dir_path, faces = await analyze_video(video)
 
-    # created = video_repository.create_user_video(db, video)
-    # return created
-    return {"msg": "OK!", "path": dir_path, "faces": faces}
+    return {"path": dir_path, "face": faces}
+
+
+@router.post("/create", response_model=video_schema.Video, summary="비디오 데이터 베이스 등록")
+async def create_videotable(video: video_schema.VideoCreate, db: Session = Depends(get_db)):
+    created = video_repository.create_user_video(db, video)
+    return created
 
 
 @router.get("/", response_model=list[video_schema.Video], summary="전체 비디오 조회")

@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
+import models
 from dependencies import get_db
 from repositories import record_repository
 from schemas import record_schema
@@ -23,10 +24,18 @@ async def create_record(record: record_schema.RecordCreate,
     return created
 
 
+@router.post("/searchTotal", response_model=list[record_schema.Record], summary="기록 3일 조회")
+async def search_total(record: record_schema.RecordSearchTotal, db: Session = Depends(get_db)):
+    limit = record_repository.count_records(record.user_id, db)
+    skip = limit-3
+    result = record_repository.get_records(db, skip, limit)
+    return result
+
+
 @router.post("/search", response_model=list[record_schema.Record], summary="기록 기간 조회")
 async def search_period_records(record: record_schema.RecordSearch,
                                 db: Session = Depends(get_db)):
-    record = record_service.search_period_record(record.user_id, record.start_date, db, datetime.now())
+    record = record_service.search_period_record(record.user_id, record.start_date, db, record.end_date)
     return record
 
 

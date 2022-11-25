@@ -3,13 +3,11 @@ from pydantic import BaseModel
 
 
 class VideoBase(BaseModel):
-    record_id: int
     created_at: datetime
 
 
 class VideoCreate(VideoBase):
-    length: int
-    size: int
+    created_at: datetime = datetime.now()
 
 
 class Video(VideoBase):

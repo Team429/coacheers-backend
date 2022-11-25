@@ -8,14 +8,11 @@ class Face(Base):
     __tablename__ = "faces"
 
     id = Column(Integer, primary_key=True, index=True)
-    anger_score = Column(Float, default=0.0)
-    scorn_score = Column(Float, default=0.0)
-    disgust_score = Column(Float, default=0.0)
-    happy_score = Column(Float, default=0.0)
-    neutral_score = Column(Float, default=0.0)
-    sad_score = Column(Float, default=0.0)
-    surprised_score = Column(Float, default=0.0)
-    voice_score = Column(Float, default=0.0)
+    anger_score = Column(Integer, default=0)
+    joy_score = Column(Integer, default=0)
+    sorrow_score = Column(Integer, default=0)
+    surprised_score = Column(Integer, default=0)
+    voice_score = Column(Float, default=0)
 
     started_at = Column(TIMESTAMP)
     ended_at = Column(TIMESTAMP)

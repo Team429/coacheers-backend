@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 import models
 from schemas import video_schema
+from services import google_vision
 
 
 def get_videos(db: Session, skip: int = 0, limit: int = 100):
@@ -13,6 +14,10 @@ def create_user_video(db: Session, video: video_schema.VideoCreate):
     db.commit()
     db.refresh(db_item)
     return db_item
+
+
+def save_face(db: Session, face: google_vision.Face):
+    print(face.joy)
 
 
 def get_video(db: Session, video_id):

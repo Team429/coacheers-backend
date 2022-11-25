@@ -15,7 +15,7 @@ def get_faces(db: Session, skip: int = 0, limit: int = 100):
 #     db.refresh(db_item)
 #     return db_item
 
-def create_user_face(db: Session, face: google_vision.Face):
+def create_user_face(db: Session, face: google_vision.Face_DTO):
     db_item = face.joy + face.anger + face.sorrow + face.surprise
     db.add(db_item)
     db.commit()

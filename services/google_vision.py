@@ -3,7 +3,7 @@ from typing import Optional
 from google.cloud import vision
 
 
-class Face:
+class Face_DTO:
     joy: int
     sorrow: int
     anger: int
@@ -16,7 +16,7 @@ class Face:
         self.sorrow = int(face.sorrow_likelihood.value)
 
 
-def detect_face(file_bytes, max_results=4) -> Optional[Face]:
+def detect_face(file_bytes, max_results=4) -> Optional[Face_DTO]:
     client = vision.ImageAnnotatorClient()
 
     image = vision.Image(content=file_bytes)
@@ -30,6 +30,6 @@ def detect_face(file_bytes, max_results=4) -> Optional[Face]:
         print(f"\tdetect_confidence: {face.detection_confidence}")
         vertices = (['({},{})'.format(vertex.x, vertex.y) for vertex in face.bounding_poly.vertices])
         print("\tface bounds: {}".format(','.join(vertices)))
-        return Face(face)
+        return Face_DTO(face)
     else:
         return None

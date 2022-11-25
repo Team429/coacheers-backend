@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, query
 
 import models
 from schemas import record_schema

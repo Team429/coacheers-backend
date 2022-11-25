@@ -19,3 +19,4 @@ class Face(Base):
     video_id = Column(Integer, ForeignKey("videos.id"))
 
     video = relationship("Video", back_populates="face")
+

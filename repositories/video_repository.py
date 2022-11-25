@@ -8,7 +8,7 @@ def get_videos(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Video).offset(skip).limit(limit).all()
 
 
-def create_user_video(db: Session, video: video_schema.VideoCreate):
+def create_video(db: Session, video: video_schema.VideoCreate):
     db_item = models.Video(**video.dict())
     db.add(db_item)
     db.commit()
@@ -16,7 +16,7 @@ def create_user_video(db: Session, video: video_schema.VideoCreate):
     return db_item
 
 
-def save_face(db: Session, face: google_vision.Face):
+def save_face(db: Session, face: google_vision.Face_DTO):
     print(face.joy)
 
 

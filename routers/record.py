@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 import models
 from dependencies import get_db
-from repositories import record_repository
+from repositories import record_repository, face_repository
 from schemas import record_schema
 from services import record_service
 
@@ -20,14 +20,19 @@ router = APIRouter(
 @router.post("/", response_model=record_schema.Record, summary="기록 생성")
 async def create_record(record: record_schema.RecordCreate,
                         db: Session = Depends(get_db)):
-    created = record_repository.create_user_record(db, record)
+    created = face_repository.get_average_face_score(db, record.video_id, record)
     return created
 
 
 @router.post("/searchTotal", response_model=list[record_schema.Record], summary="기록 3일 조회")
 async def search_total(record: record_schema.RecordSearchTotal, db: Session = Depends(get_db)):
     limit = record_repository.count_records(record.user_id, db)
-    skip = limit-3
+    if limit >= 3:
+        skip = limit - 3
+    if limit == 2:
+        skip = limit - 2
+    if limit == 1:
+        skip = limit - 1
     result = record_repository.get_records(db, skip, limit)
     return result
 

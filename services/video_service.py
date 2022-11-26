@@ -11,7 +11,6 @@ from sqlalchemy.orm import Session
 
 import models
 from models import Video
-from schemas import face_schema
 from services.google_vision import Face_DTO
 
 
@@ -29,3 +28,5 @@ def create_face_rows(faces: list[Face_DTO], video_model: Video, db: Session):
     db.add_all(face_models)
     db.commit()
     return
+
+

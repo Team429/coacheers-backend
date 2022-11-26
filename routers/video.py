@@ -10,6 +10,7 @@ from repositories import video_repository
 from schemas import video_schema
 from services.analyzing import analyze_video
 from services import video_service
+from repositories import face_repository
 
 router = APIRouter(
     prefix="/videos",
@@ -28,7 +29,7 @@ async def create_video(video: fastapi.UploadFile, file_path: str = Form(), creat
     schema.file_path = file_path
     created_video = video_repository.create_video(db, schema)
     video_service.create_face_rows(faces, created_video, db)
-    return {"path": dir_path, "face": faces}
+    return {"path": dir_path, "face": faces, "video_id": created_video.id}
 
 
 @router.get("/", response_model=list[video_schema.Video], summary="전체 비디오 조회")

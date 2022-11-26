@@ -10,12 +10,7 @@ class RecordBase(BaseModel):
 class RecordCreate(RecordBase):
     label: str
     filepath: str
-
-    anger_score: int
-    joy_score: int
-    sorrow_score: int
-    surprised_score: int
-
+    video_id: int
     voice_score: float
 
 

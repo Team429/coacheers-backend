@@ -21,8 +21,8 @@ router = APIRouter(
 @router.post("/", response_model=attendance_schema.Attendance, summary="출석 생성")
 async def create_attendance(attendance: attendance_schema.AttendanceCreate,
                             db: Session = Depends(get_db)):
-    # if attendance_service.create_daily_attendance(attendance.user_id, datetime.now(), db):
-    created = attendance_repository.create_user_attendance(db, attendance)
+    if attendance_service.create_daily_attendance(attendance.user_id, datetime.now(), db):
+        created = attendance_repository.create_user_attendance(db, attendance)
     return created
 
 

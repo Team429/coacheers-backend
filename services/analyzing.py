@@ -15,13 +15,14 @@ async def analyze_video(file: UploadFile) -> tuple[Path, list]:
     try:
         async with aiofiles.tempfile.NamedTemporaryFile("wb", delete=False) as temp:
             try:
+                await file.seek(0)
                 contents = await file.read()
                 await temp.write(contents)
             except Exception as exception:
                 print({"message": "There was an error uploading the file"})
                 raise exception
             finally:
-                await file.close()
+                pass
 
         res, faces = await run_in_threadpool(capture_video, temp.name)  # Pass temp.name to VideoCapture()
     except Exception as exception:

@@ -16,7 +16,7 @@ def create_video(db: Session, video: video_schema.VideoCreate):
     return db_item
 
 
-def save_face(db: Session, face: analyzing.Face_DTO):
+def save_face(db: Session, face: sentiment_analyzing.Face_DTO):
     print(face.joy)
 
 

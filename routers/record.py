@@ -27,7 +27,12 @@ async def create_record(record: record_schema.RecordCreate,
 @router.post("/searchTotal", response_model=list[record_schema.Record], summary="기록 3일 조회")
 async def search_total(record: record_schema.RecordSearchTotal, db: Session = Depends(get_db)):
     limit = record_repository.count_records(record.user_id, db)
-    skip = limit-3
+    if limit >= 3:
+        skip = limit - 3
+    if limit == 2:
+        skip = limit - 2
+    if limit == 1:
+        skip = limit - 1
     result = record_repository.get_records(db, skip, limit)
     return result
 

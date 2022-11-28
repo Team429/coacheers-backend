@@ -5,13 +5,12 @@
 # 3. db face table 가져오기
 # 4. db에 점수들 저장
 # output:
-from pathlib import Path
 
 from sqlalchemy.orm import Session
 
 import models
 from models import Video
-from services.google_vision import Face_DTO
+from services.sentiment_analyzing import Face_DTO
 
 
 def create_face_rows(faces: list[Face_DTO], video_model: Video, db: Session):

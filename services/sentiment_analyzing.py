@@ -1,14 +1,15 @@
 import datetime
 import os
 from pathlib import Path
+from typing import Optional
 
 import aiofiles
 import cv2
 from fastapi import UploadFile
 from fastapi.concurrency import run_in_threadpool
+from google.cloud import vision
 
 from config.env import get_env
-from services.google_vision import detect_face
 
 
 async def analyze_video(file: UploadFile) -> tuple[Path, list]:
@@ -103,3 +104,35 @@ def get_capture_name(dir_path: Path, pos_msec: int) -> Path:
     pos_second = int(pos_msec / 1000)
     full_path = dir_path.joinpath(str(pos_second) + ".png")
     return full_path
+
+
+class Face_DTO:
+    joy: int
+    sorrow: int
+    anger: int
+    surprise: int
+
+    def __init__(self, face: vision.FaceAnnotation):
+        self.anger = int(face.anger_likelihood)
+        self.joy = int(face.joy_likelihood)
+        self.surprise = int(face.surprise_likelihood.value)
+        self.sorrow = int(face.sorrow_likelihood.value)
+
+
+def detect_face(file_bytes, max_results=4) -> Optional[Face_DTO]:
+    client = vision.ImageAnnotatorClient()
+
+    image = vision.Image(content=file_bytes)
+
+    response = client.face_detection(image=image, max_results=max_results)
+    faces = response.face_annotations
+
+    if len(faces) > 0:
+        face = faces[0]
+        print("Face detected!")
+        print(f"\tdetect_confidence: {face.detection_confidence}")
+        vertices = (['({},{})'.format(vertex.x, vertex.y) for vertex in face.bounding_poly.vertices])
+        print("\tface bounds: {}".format(','.join(vertices)))
+        return Face_DTO(face)
+    else:
+        return None

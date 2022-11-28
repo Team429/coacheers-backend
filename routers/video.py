@@ -8,9 +8,8 @@ from sqlalchemy.orm import Session
 from dependencies import get_db
 from repositories import video_repository
 from schemas import video_schema
-from services.analyzing import analyze_video
 from services import video_service
-from repositories import face_repository
+from services.sentiment_analyzing import analyze_video
 
 router = APIRouter(
     prefix="/videos",

@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 import models
 from schemas import video_schema
-from services import google_vision
+from services import sentiment_analyzing
 
 
 def get_videos(db: Session, skip: int = 0, limit: int = 100):
@@ -16,7 +16,7 @@ def create_video(db: Session, video: video_schema.VideoCreate):
     return db_item
 
 
-def save_face(db: Session, face: google_vision.Face_DTO):
+def save_face(db: Session, face: analyzing.Face_DTO):
     print(face.joy)
 
 

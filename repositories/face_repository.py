@@ -1,10 +1,9 @@
 from sqlalchemy.orm import Session
-import models
-from schemas import face_schema
-from services import google_vision
-from schemas import record_schema
 from sqlalchemy.sql import func
-from models import Record, Video
+
+import models
+from schemas import record_schema
+from services import sentiment_analyzing
 
 
 def get_faces(db: Session, skip: int = 0, limit: int = 100):
@@ -18,7 +17,7 @@ def get_faces(db: Session, skip: int = 0, limit: int = 100):
 #     db.refresh(db_item)
 #     return db_item
 
-def create_user_face(db: Session, face: google_vision.Face_DTO):
+def create_user_face(db: Session, face: setiment_analyze.Face_DTO):
     db_item = face.joy + face.anger + face.sorrow + face.surprise
     db.add(db_item)
     db.commit()

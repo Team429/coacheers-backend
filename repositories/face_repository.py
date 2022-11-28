@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.sql import func
 
 import models
-from schemas import record_schema
+from schemas import record_schema, face_schema
 from services import sentiment_analyzing
 
 
@@ -23,6 +23,23 @@ def create_user_face(db: Session, face: sentiment_analyzing.Face_DTO):
     db.commit()
     db.refresh(db_item)
     return db_item
+
+
+def create_faces(db: Session, faces: list[face_schema.FaceCreate]):
+    face_models = []
+    for face in faces:
+        db_item = models.Face(
+            anger_score=face.anger_score,
+            sorrow_score=face.sorrow_score,
+            surprised_score=face.surprised_score,
+            joy_score=face.joy_score,
+            video_id=face.video_id,
+        )
+        face_models.append(db_item)
+    db.add_all(face_models)
+    db.commit()
+
+    return face_models
 
 
 def get_face(db: Session, face_id):

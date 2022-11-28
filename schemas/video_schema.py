@@ -8,8 +8,7 @@ class VideoBase(BaseModel):
 
 
 class VideoCreate(VideoBase):
-    created_at: datetime = datetime.now()
-    file_path: str = "file path"
+    pass
 
 
 class Video(VideoBase):

@@ -52,6 +52,7 @@ class RecordOne(BaseModel):
     joy_score: int
     sorrow_score: int
     surprised_score: int
+    filepath: str
 
     class Config:
         orm_mode = True

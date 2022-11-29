@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session, query
 
 import models
 from schemas import record_schema
+from repositories import face_repository
 
 
 def get_records(db: Session, skip: int = 0, limit: int = 100):
@@ -13,11 +14,11 @@ def get_records(db: Session, skip: int = 0, limit: int = 100):
 
 def create_user_record(db: Session, record: record_schema.RecordCreate):
     db_item = models.Record(**record.dict())
-    db_item.face_score = (db_item.anger_score + db_item.surprised_score + db_item.sorrow_score + db_item.joy_score) / 4
-    db_item.total_score = (db_item.face_score + db_item.voice_score) / 2
-    db.add(db_item)
-    db.commit()
+    # db_item.face_score = (db_item.anger_score + db_item.surprised_score + db_item.sorrow_score + db_item.joy_score) / 4
+    # db_item.total_score = (db_item.face_score + db_item.voice_score) / 2
+    face_repository.get_average_face_score(db, 1)
     db.refresh(db_item)
+
     return db_item
 
 

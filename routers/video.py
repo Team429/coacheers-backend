@@ -8,8 +8,7 @@ from sqlalchemy.orm import Session
 from dependencies import get_db
 from repositories import video_repository
 from schemas import video_schema
-from services.analyzing import analyze_video
-from services import video_service
+from services import sentiment_analyzing, speech_to_text, face_service, video_service, sound_service
 
 router = APIRouter(
     prefix="/videos",
@@ -22,13 +21,14 @@ router = APIRouter(
 @router.post("/", summary="비디오 생성")
 async def create_video(video: fastapi.UploadFile, file_path: str = Form(), create_at: datetime.datetime = Form(),
                        db: Session = Depends(get_db)):
-    dir_path, faces = await analyze_video(video)
-    schema = video_schema.VideoCreate()
-    schema.created_at = create_at
-    schema.file_path = file_path
-    created_video = video_repository.create_video(db, schema)
-    video_service.create_face_rows(faces, created_video, db)
-    return {"path": dir_path, "face": faces}
+    dir_path, faces = await sentiment_analyzing.analyze_video(video)
+    text = await speech_to_text.transcript(video)
+
+    created_video = video_service.create_video(file_path, create_at, db)
+    sound_service.create_sound(text, created_video, db)
+    face_service.create_faces(faces, created_video, db)
+
+    return {"path": dir_path, "face": faces, "video_id": created_video.id}
 
 
 @router.get("/", response_model=list[video_schema.Video], summary="전체 비디오 조회")

@@ -12,9 +12,6 @@ class FaceCreate(FaceBase):
     sorrow_score: int
     surprised_score: int
 
-    started_at: datetime
-    ended_at: datetime
-
 
 class Face(FaceBase):
     id: int

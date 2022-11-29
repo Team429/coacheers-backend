@@ -12,10 +12,7 @@ class Face(Base):
     joy_score = Column(Integer, default=0)
     sorrow_score = Column(Integer, default=0)
     surprised_score = Column(Integer, default=0)
-    voice_score = Column(Float, default=0)
 
-    started_at = Column(TIMESTAMP)
-    ended_at = Column(TIMESTAMP)
     video_id = Column(Integer, ForeignKey("videos.id"))
 
     video = relationship("Video", back_populates="face")

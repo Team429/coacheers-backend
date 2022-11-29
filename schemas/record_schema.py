@@ -31,6 +31,7 @@ class RecordWeekSearch(RecordSearch):
 
 class Record(RecordBase):
     id: int
+    video_id: int
     label: str
     voice_score: float
     face_score: float

@@ -7,7 +7,7 @@ class VideoBase(BaseModel):
 
 
 class VideoCreate(VideoBase):
-    pass
+    file_path: str
 
 
 class Video(VideoBase):

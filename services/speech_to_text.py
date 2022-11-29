@@ -50,8 +50,8 @@ async def transcript(file: UploadFile, interval: int = 50):
                 print(f"@@ \tconfidence: {confidence}, transcript: {transcript_text}")
                 if len(transcript_text) > 0:
                     full_text += transcript_text
-    print(f"@@ \ttranscript DONE")
-    os.remove(temp.name)
+    print(f"@@ \ttranscri pt DONE")
+    temp.close()
     print(f"@@ \tfull_text : {full_text}")
     return full_text
 

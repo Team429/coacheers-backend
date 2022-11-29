@@ -21,4 +21,4 @@ def save_face(db: Session, face: sentiment_analyzing.Face_DTO):
 
 
 def get_video(db: Session, video_id):
-    return db.query(models.Video).filter(models.Video.id == video_id)
+    return db.query(models.Video).filter(models.Video.id == video_id).first()

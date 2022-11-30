@@ -44,7 +44,7 @@ async def search_month_records(record: record_schema.RecordMonthSearch,
     return record
 
 
-@router.post("/searchweek", response_model=list[record_schema.Record], summary="기록 일주일 조회")
+@router.post("/searchweek", response_model=list[record_schema.RecordOne], summary="기록 일주일 조회")
 async def search_week_records(record: record_schema.RecordWeekSearch,
                               db: Session = Depends(get_db)):
     record = record_service.search_period_record(record.user_id, record.start_date, db, datetime.now())

@@ -8,6 +8,7 @@ from pathlib import Path
 from fastapi import UploadFile
 from google.cloud import speech
 from moviepy.editor import AudioClip, VideoFileClip
+from services.voice_analyzing import analyse_sound
 
 from config.env import get_env
 
@@ -96,6 +97,7 @@ def write_subclips(subclips: list[AudioClip], dir_path: Path) -> list[Path]:
         full_path = get_capture_name(dir_path, i)
         subclip.write_audiofile(full_path)
         paths.append(full_path)
+        data = analyse_sound(full_path)
         i += 1
 
     print(f"@@ \twrite subclip to file DONE")

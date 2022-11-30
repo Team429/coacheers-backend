@@ -55,9 +55,17 @@ def get_average_face_score(db: Session, video_id, record: record_schema.RecordCr
     anger_score = float(anger_score) / db.query(models.Face).filter(video_id == models.Face.video_id).count()
     joy_score = float(joy_score) / db.query(models.Face).filter(video_id == models.Face.video_id).count()
     sorrow_score = float(sorrow_score) / db.query(models.Face).filter(video_id == models.Face.video_id).count()
-    surprised_score = float(surprised_score) / db.query(models.Face).filter(video_id == models.Face.video_id).count()
+    surprised_score = float(surprised_score) / db.query(models.Face).filter(
+        video_id == models.Face.video_id).count()
 
-    face_score = float((anger_score + joy_score + sorrow_score + surprised_score) / 4)
+    anger_score = float((abs(anger_score - 1) * 10))
+    joy_score = float(100 + ((joy_score - 3) * 20))
+    sorrow_score = float((abs(sorrow_score - 1) * 5))
+    surprised_score = float(abs(surprised_score - 1) * 5)
+    if joy_score > 100:
+        face_score = joy_score - (joy_score - 100) - anger_score - sorrow_score - surprised_score
+    else:
+        face_score = joy_score - anger_score - sorrow_score - surprised_score
 
     record_models = []
     db_item = models.Record(

@@ -8,8 +8,9 @@ from schemas import record_schema
 from repositories import face_repository
 
 
-def get_records(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Record).offset(skip).limit(limit).all()
+def get_recent_records(db: Session, user_id: int):
+    return db.query(models.Record).where(models.Record.user_id == user_id).order_by(
+        models.Record.created_at).limit(3).all()
 
 
 def create_user_record(db: Session, record: record_schema.RecordCreate):

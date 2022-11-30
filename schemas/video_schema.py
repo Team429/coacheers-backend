@@ -4,11 +4,10 @@ from pydantic import BaseModel
 
 class VideoBase(BaseModel):
     created_at: datetime
-    file_path: str
 
 
 class VideoCreate(VideoBase):
-    pass
+    file_path: str
 
 
 class Video(VideoBase):

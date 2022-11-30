@@ -31,6 +31,7 @@ class RecordWeekSearch(RecordSearch):
 
 class Record(RecordBase):
     id: int
+    video_id: int
     label: str
     voice_score: float
     face_score: float
@@ -52,6 +53,7 @@ class RecordOne(BaseModel):
     joy_score: int
     sorrow_score: int
     surprised_score: int
+    filepath: str
 
     class Config:
         orm_mode = True

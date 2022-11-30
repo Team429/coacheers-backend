@@ -1,16 +1,15 @@
 import datetime
 import io
 import math
-import os
 import tempfile
 from pathlib import Path
 
 from fastapi import UploadFile
 from google.cloud import speech
 from moviepy.editor import AudioClip, VideoFileClip
-from services.voice_analyzing import analyse_sound
 
 from config.env import get_env
+from services.voice_analyzing import analyse_sound, Data
 
 
 async def transcript(file: UploadFile, interval: int = 50):
@@ -39,6 +38,7 @@ async def transcript(file: UploadFile, interval: int = 50):
 
     paths = write_subclips(subclips, dir_path)
 
+    voice_data_list = analyze_voices(paths)
     responses = call_google_api(paths)
     results = list(map(lambda r: r.result(), responses))
     full_text = ""
@@ -97,9 +97,6 @@ def write_subclips(subclips: list[AudioClip], dir_path: Path) -> list[Path]:
         full_path = get_capture_name(dir_path, i)
         subclip.write_audiofile(full_path)
         paths.append(full_path)
-        data = analyse_sound(full_path)
-        print(
-            f"@@ \tvoice data \n\t\thigh : {data.get_high()}, \n\t\tclean : {data.get_clean()}, \n\t\tthick : {data.get_thick()}, \n\t\tintensity : {data.get_intensity()}")
         i += 1
     print(f"@@ \twrite subclip to file DONE")
     return paths
@@ -128,3 +125,14 @@ def call_google_api(paths: list[Path]) -> list:
         responses.append(response)
     print(f"@@ \tapi called DONE")
     return responses
+
+
+def analyze_voices(paths: list[Path]) -> list[Data]:
+    list = []
+    for path in paths:
+        data = analyse_sound(path)
+        print(
+            f"@@ \tvoice data \n\t\tduration : {data.get_duration()}\n\t\thigh : {data.get_high()}, \n\t\tclean : {data.get_clean()}, \n\t\tthick : {data.get_thick()}, \n\t\tintensity : {data.get_intensity()}")
+        list.append(data)
+    print(f"@@\t analyze voice DONE")
+    return list

@@ -23,6 +23,7 @@ class Data:
     ltas: float
     intensity: float
     cpp: float
+    duration: float
 
     def get_clean(self):
         return self.cpp
@@ -36,6 +37,9 @@ class Data:
     def get_intensity(self):
         return self.intensity
 
+    def get_duration(self):
+        return self.duration
+
 
 def analyse_sound(filepath: Path) -> Data:
     return measurePitch(str(filepath), 75, 1000)
@@ -43,7 +47,6 @@ def analyse_sound(filepath: Path) -> Data:
 
 def measurePitch(voiceID, f0min, f0max) -> Data:
     sound = parselmouth.Sound(voiceID)  # read the sound
-    print(sound.duration)
     pitch = call(sound, "To Pitch", 0.0, f0min, f0max)
     f0_mean = call(pitch, "Get mean", 0, 0, "Hertz")
     pointProcess = call(sound, "To PointProcess (periodic, cc)", f0min, f0max)  # create a praat pitch object
@@ -96,6 +99,7 @@ def measurePitch(voiceID, f0min, f0max) -> Data:
     data.ltas = ltas
     data.intensity = intensity
     data.cpp = cpp
+    data.duration = sound.duration
 
     return data
 

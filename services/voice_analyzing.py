@@ -21,14 +21,27 @@ class Data:
     hnr35: float
     hnr38: float
     ltas: float
+    intensity: float
+    cpp: float
+
+    def get_clean(self):
+        return self.cpp
+
+    def get_thick(self):
+        return self.ltas
+
+    def get_high(self):
+        return self.f0_mean
+
+    def get_intensity(self):
+        return self.intensity
 
 
+def analyse_sound(filepath: Path) -> Data:
+    return measurePitch(str(filepath), 75, 1000)
 
-def analyse_sound(filepath: Path):
-    print(measurePitch(str(filepath), 75, 1000))
 
-
-def measurePitch(voiceID, f0min, f0max):
+def measurePitch(voiceID, f0min, f0max) -> Data:
     sound = parselmouth.Sound(voiceID)  # read the sound
     print(sound.duration)
     pitch = call(sound, "To Pitch", 0.0, f0min, f0max)
@@ -57,6 +70,13 @@ def measurePitch(voiceID, f0min, f0max):
     longTermAvarageSpectrumSlope = call(sound, "To Ltas", 3800)
     ltas = call(longTermAvarageSpectrumSlope, "Get mean", 0, 0, "dB")  # energy, sones, dB
 
+    intensity = call(sound, "Get intensity (dB)")
+
+    power_cepstrogram = call(sound, "To PowerCepstrogram", 60, 0.01, f0max, 50)
+    cpp = call(power_cepstrogram, "Get CPPS", True, 0.01, 0.001, 60.0, 330.0, 0.005, 'parabolic', 0.001, 0.05,
+               "Exponential decay",
+               "Robust slow")
+
     data = Data()
     data.f0_mean = f0_mean
     data.localJitter = localJitter,
@@ -74,6 +94,8 @@ def measurePitch(voiceID, f0min, f0max):
     data.hnr35 = hnr35
     data.hnr38 = hnr38
     data.ltas = ltas
+    data.intensity = intensity
+    data.cpp = cpp
 
     return data
 

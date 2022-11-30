@@ -98,8 +98,9 @@ def write_subclips(subclips: list[AudioClip], dir_path: Path) -> list[Path]:
         subclip.write_audiofile(full_path)
         paths.append(full_path)
         data = analyse_sound(full_path)
+        print(
+            f"@@ \tvoice data \n\t\thigh : {data.get_high()}, \n\t\tclean : {data.get_clean()}, \n\t\tthick : {data.get_thick()}, \n\t\tintensity : {data.get_intensity()}")
         i += 1
-
     print(f"@@ \twrite subclip to file DONE")
     return paths
 

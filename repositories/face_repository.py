@@ -72,7 +72,7 @@ def create_face_record(db: Session, video_id, record: record_schema.RecordCreate
     thick_score = db.query(func.sum(models.Sound.thick)).filter(video_id == models.Sound.video_id).first()[0]
     intensity_score = db.query(func.sum(models.Sound.intensity)).filter(video_id == models.Sound.video_id).first()[0]
 
-    voice_score = high_score * 2 + clean_score + thick_score + intensity_score
+    voice_score = (high_score * 2 + clean_score + thick_score + intensity_score) / 5
 
     db_item = models.Record(
         user_id=record.user_id,

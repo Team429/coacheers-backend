@@ -20,7 +20,7 @@ router = APIRouter(
 @router.post("/", response_model=record_schema.Record, summary="기록 생성")
 async def create_record(record: record_schema.RecordCreate,
                         db: Session = Depends(get_db)):
-    created = face_repository.get_average_face_score(db, record.video_id, record)
+    created = face_repository.create_face_record(db, record.video_id, record)
     return created
 
 

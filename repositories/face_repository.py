@@ -46,17 +46,17 @@ def get_face(db: Session, face_id):
     return db.query(models.Face).filter(models.Face.id == face_id)
 
 
-def get_average_face_score(db: Session, video_id, record: record_schema.RecordCreate):
+def create_face_record(db: Session, video_id, record: record_schema.RecordCreate):
     anger_score = db.query(func.sum(models.Face.anger_score)).filter(video_id == models.Face.video_id).first()[0]
     joy_score = db.query(func.sum(models.Face.joy_score)).filter(video_id == models.Face.video_id).first()[0]
     sorrow_score = db.query(func.sum(models.Face.sorrow_score)).filter(video_id == models.Face.video_id).first()[0]
     surprised_score = db.query(func.sum(models.Face.surprised_score)).filter(video_id == models.Face.video_id).first()[
         0]
-    anger_score = float(anger_score) / db.query(models.Face).filter(video_id == models.Face.video_id).count()
-    joy_score = float(joy_score) / db.query(models.Face).filter(video_id == models.Face.video_id).count()
-    sorrow_score = float(sorrow_score) / db.query(models.Face).filter(video_id == models.Face.video_id).count()
-    surprised_score = float(surprised_score) / db.query(models.Face).filter(
-        video_id == models.Face.video_id).count()
+    count = db.query(models.Face).filter(video_id == models.Face.video_id).count()
+    anger_score = float(anger_score) / count
+    joy_score = float(joy_score) / count
+    sorrow_score = float(sorrow_score) / count
+    surprised_score = float(surprised_score) / count
 
     anger_score = float((abs(anger_score - 1) * 10))
     joy_score = float(100 + ((joy_score - 3) * 20))
@@ -67,14 +67,25 @@ def get_average_face_score(db: Session, video_id, record: record_schema.RecordCr
     else:
         face_score = joy_score - anger_score - sorrow_score - surprised_score
 
-    record_models = []
+    count_sound = db.query(models.Sound).filter(video_id == models.Sound.video_id).count()
+    high_score = db.query(func.sum(models.Sound.high)).filter(video_id == models.Sound.video_id).first()[
+                     0] / count_sound
+    clean_score = db.query(func.sum(models.Sound.clean)).filter(video_id == models.Sound.video_id).first()[
+                      0] / count_sound
+    thick_score = db.query(func.sum(models.Sound.thick)).filter(video_id == models.Sound.video_id).first()[
+                      0] / count_sound
+    intensity_score = db.query(func.sum(models.Sound.intensity)).filter(video_id == models.Sound.video_id).first()[
+                          0] / count_sound
+
+    voice_score = high_score * 2 + clean_score + thick_score + intensity_score
+
     db_item = models.Record(
         user_id=record.user_id,
         video_id=record.video_id,
         created_at=record.created_at,
         label=record.label,
         filepath=record.filepath,
-        voice_score=record.voice_score,
+        voice_score=voice_score,
         anger_score=anger_score,
         joy_score=joy_score,
         sorrow_score=sorrow_score,
@@ -82,7 +93,6 @@ def get_average_face_score(db: Session, video_id, record: record_schema.RecordCr
         face_score=face_score,
         total_score=face_score
     )
-    record_models.append(db_item)
-    db.add_all(record_models)
+    db.add(db_item)
     db.commit()
     return db_item

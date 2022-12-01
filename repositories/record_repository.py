@@ -13,16 +13,6 @@ def get_recent_records(db: Session, user_id: int):
         models.Record.created_at).limit(3).all()
 
 
-def create_user_record(db: Session, record: record_schema.RecordCreate):
-    db_item = models.Record(**record.dict())
-    # db_item.face_score = (db_item.anger_score + db_item.surprised_score + db_item.sorrow_score + db_item.joy_score) / 4
-    # db_item.total_score = (db_item.face_score + db_item.voice_score) / 2
-    face_repository.get_average_face_score(db, 1)
-    db.refresh(db_item)
-
-    return db_item
-
-
 def get_record(db: Session, record_id):
     return db.query(models.Record).filter(models.Record.id == record_id).first()
 

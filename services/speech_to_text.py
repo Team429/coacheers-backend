@@ -39,6 +39,13 @@ async def transcript(file: UploadFile, interval: int = 50):
     paths = write_subclips(subclips, dir_path)
 
     voice_data_list = analyze_voices(paths)
+    high, thick, clean, intensity = get_voice_score(voice_data_list)
+    print(f"@@\t mean : h{high}, t{thick}, c{clean}, i{intensity}")
+    high_n = (high / 150) * 100
+    thick_n = (thick + 15) / 30 * 100
+    clean_n = (clean + 15) / 30 * 100
+    intensity_n = intensity
+
     responses = call_google_api(paths)
     results = list(map(lambda r: r.result(), responses))
     full_text = ""
@@ -54,7 +61,7 @@ async def transcript(file: UploadFile, interval: int = 50):
     print(f"@@ \ttranscri pt DONE")
     temp.close()
     print(f"@@ \tfull_text : {full_text}")
-    return full_text
+    return full_text, high_n, thick_n, clean_n, intensity_n
 
 
 def subclip_for_api(full_clip: AudioClip, interval: int = 50) -> list[AudioClip]:
@@ -136,3 +143,26 @@ def analyze_voices(paths: list[Path]) -> list[Data]:
         list.append(data)
     print(f"@@\t analyze voice DONE")
     return list
+
+
+def get_voice_score(list: list[Data]):
+    high_result = 0.0
+    thick_result = 0.0
+    clean_result = 0.0
+    intensity_result = 0.0
+    duration_result = 0.0
+
+    for data in list:
+        duration = data.get_duration()
+        high = data.get_high()
+        thick = data.get_thick()
+        clean = data.get_clean()
+        intensity = data.get_intensity()
+
+        high_result += high * duration
+        thick_result += thick * duration
+        clean_result += clean * duration
+        intensity_result += intensity * duration
+        duration_result += duration
+
+    return high_result / duration_result, thick_result / duration_result, clean_result / duration_result, intensity_result / duration_result

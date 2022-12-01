@@ -8,10 +8,12 @@ from repositories import sound_repository
 from schemas import sound_schema
 
 
-def create_sound(text: str, video: models.Video, db: Session) -> Sound:
+def create_sound(text: str, high, thick, clean, intensity, video: models.Video, db: Session) -> Sound:
     sound_create = sound_schema.SoundCreate(
-        frequency_score=0.0,
-        db_score=0.0,
+        high=high,
+        thick=thick,
+        clean=clean,
+        intensity=intensity,
         video_id=video.id,
         stt_content=text,
         started_at=datetime.datetime.now(),

@@ -22,10 +22,12 @@ router = APIRouter(
 async def create_video(video: fastapi.UploadFile, file_path: str = Form(), create_at: datetime.datetime = Form(),
                        db: Session = Depends(get_db)):
     dir_path, faces = await sentiment_analyzing.analyze_video(video)
-    text = await speech_to_text.transcript(video)
+    text, high, thick, clean, intensity = await speech_to_text.transcript(video)
 
     created_video = video_service.create_video(file_path, create_at, db)
-    sound_service.create_sound(text, created_video, db)
+    sound_service.create_sound(text=text,
+                               high=high, thick=thick, clean=clean, intensity=intensity,
+                               video=created_video, db=db)
     face_service.create_faces(faces, created_video, db)
 
     return {"path": dir_path, "face": faces, "video_id": created_video.id}

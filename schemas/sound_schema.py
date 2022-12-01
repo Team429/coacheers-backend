@@ -7,9 +7,11 @@ class SoundBase(BaseModel):
 
 
 class SoundCreate(SoundBase):
-    db_score: float
+    high: float
+    thick: float
+    clean: float
+    intensity: float
     stt_content: str
-    frequency_score: float
     started_at: datetime
     ended_at: datetime
 

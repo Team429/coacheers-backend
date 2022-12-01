@@ -8,9 +8,13 @@ class Sound(Base):
     __tablename__ = "sounds"
 
     id = Column(Integer, primary_key=True, index=True)
-    db_score = Column(Float)
+
+    high = Column(Float)
+    thick = Column(Float)
+    clean = Column(Float)
+    intensity = Column(Float)
+
     stt_content = Column(Text, default=None)
-    frequency_score = Column(Float)
     started_at = Column(TIMESTAMP)
     ended_at = Column(TIMESTAMP)
 

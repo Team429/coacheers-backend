@@ -53,6 +53,12 @@ class RecordOne(BaseModel):
     joy_score: int
     sorrow_score: int
     surprised_score: int
+
+    high_score: float
+    clean_score: float
+    intensity_score: float
+    thick_score: float
+
     filepath: str
 
     class Config:

@@ -20,6 +20,12 @@ class Record(Base):
     sorrow_score = Column(Float, default=0)
     surprised_score = Column(Float, default=0)
 
+    high_score = Column(Float, default=0)
+    clean_score = Column(Float, default=0)
+    intensity_score = Column(Float, default=0)
+    thick_score = Column(Float, default=0)
+
+
     voice_score = Column(Float, default=0.0)
     face_score = Column(Float, default=0.0)
     total_score = Column(Float, default=0.0)

@@ -67,15 +67,10 @@ def create_face_record(db: Session, video_id, record: record_schema.RecordCreate
     else:
         face_score = joy_score - anger_score - sorrow_score - surprised_score
 
-    count_sound = db.query(models.Sound).filter(video_id == models.Sound.video_id).count()
-    high_score = db.query(func.sum(models.Sound.high)).filter(video_id == models.Sound.video_id).first()[
-                     0] / count_sound
-    clean_score = db.query(func.sum(models.Sound.clean)).filter(video_id == models.Sound.video_id).first()[
-                      0] / count_sound
-    thick_score = db.query(func.sum(models.Sound.thick)).filter(video_id == models.Sound.video_id).first()[
-                      0] / count_sound
-    intensity_score = db.query(func.sum(models.Sound.intensity)).filter(video_id == models.Sound.video_id).first()[
-                          0] / count_sound
+    high_score = db.query(func.sum(models.Sound.high)).filter(video_id == models.Sound.video_id).first()[0]
+    clean_score = db.query(func.sum(models.Sound.clean)).filter(video_id == models.Sound.video_id).first()[0]
+    thick_score = db.query(func.sum(models.Sound.thick)).filter(video_id == models.Sound.video_id).first()[0]
+    intensity_score = db.query(func.sum(models.Sound.intensity)).filter(video_id == models.Sound.video_id).first()[0]
 
     voice_score = high_score * 2 + clean_score + thick_score + intensity_score
 
@@ -86,12 +81,19 @@ def create_face_record(db: Session, video_id, record: record_schema.RecordCreate
         label=record.label,
         filepath=record.filepath,
         voice_score=voice_score,
+
         anger_score=anger_score,
         joy_score=joy_score,
         sorrow_score=sorrow_score,
         surprised_score=surprised_score,
+
+        high_score=high_score,
+        clean_score=clean_score,
+        thick_score=thick_score,
+        intensity_score=intensity_score,
+
         face_score=face_score,
-        total_score=face_score
+        total_score=(face_score + voice_score) / 2
     )
     db.add(db_item)
     db.commit()
